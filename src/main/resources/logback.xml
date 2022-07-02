@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <appender name="Console"
+              class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>
+                %black(%d{ISO8601}) %highlight(%-5level) [%blue(%X{TRANSACTION_ID})] [%green(%X{USER_NM})] [%blue(%t)] %yellow(%C{1.}): %msg%n%throwable
+            </Pattern>
+        </layout>
+    </appender>
+
+    <logger name="jdbc" level="OFF"/>
+
+    <!-- SQL문만 로깅, PreparedStatement일 경우 관련된 argument 값으로 대체된 SQL문 출력 -->
+    <logger name="jdbc.sqlonly" level="OFF"/>
+
+    <!-- SQL문과 수행 시간 정보(milliseconds) 포함 -->
+    <logger name="jdbc.sqltiming" level="DEBUG"/>
+
+    <!-- ResultSet을 제외한 모든 JDBC 호출 정보 로깅. JDBC 문제를 추적해야 할 필요가 있는 경우에만 사용 -->
+    <logger name="jdbc.audit" level="OFF"/>
+
+    <!-- ResultSet을 포함한 모든 JDBC 호출 정보 로깅. 로그양이 많음 -->
+    <logger name="jdbc.resultset" level="OFF"/>
+
+    <!-- SQL 결과를 table 형태로 로깅 -->
+    <logger name="jdbc.resultsettable" level="DEBUG"/>
+
+    <!-- Connection의 연결과 종료에 관련된 로깅. 메모리 누수 확인? -->
+    <logger name="jdbc.connection" level="OFF"/>
+
+    <!-- LOG everything at INFO level -->
+    <root level="debug">
+        <appender-ref ref="Console"/>
+    </root>
+
+</configuration>
