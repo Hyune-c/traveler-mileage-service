@@ -9,4 +9,9 @@ import org.springframework.validation.Errors;
 public class BusinessException extends RuntimeException {
 
     private final Errors errors;
+
+    public BusinessException(final String message) {
+        super(message);
+        this.errors = null;
+    }
 }
