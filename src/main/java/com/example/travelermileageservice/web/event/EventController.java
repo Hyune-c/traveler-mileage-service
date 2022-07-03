@@ -2,6 +2,7 @@ package com.example.travelermileageservice.web.event;
 
 import com.example.travelermileageservice.domain.base.exception.BusinessException;
 import com.example.travelermileageservice.domain.review.service.ReviewAddService;
+import com.example.travelermileageservice.domain.review.service.ReviewDeleteService;
 import com.example.travelermileageservice.domain.review.service.dto.ReviewAddDto;
 import com.example.travelermileageservice.web.event.request.EventPostReqeust;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,7 @@ import java.util.UUID;
 public class EventController {
 
     private final ReviewAddService reviewAddService;
+    private final ReviewDeleteService reviewDeleteService;
 
     @PostMapping("/events")
     public UUID event(@RequestBody @Valid final EventPostReqeust reqeust) {
@@ -28,7 +30,8 @@ public class EventController {
             case MOD:
                 return UUID.randomUUID();
             case DELETE:
-                return UUID.randomUUID();
+                reviewDeleteService.delete(reqeust.getReviewId());
+                return null;
             default:
                 throw new BusinessException("Unexpected value: " + reqeust.getAction());
         }

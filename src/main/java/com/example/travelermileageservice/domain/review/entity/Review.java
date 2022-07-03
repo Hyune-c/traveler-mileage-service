@@ -35,6 +35,8 @@ public class Review extends BaseEntity {
     @JoinColumn(name = "REVIEW_ID")
     private List<AttachedPhoto> attachedPhotos;
 
+    private Boolean deleted = false;
+
     public Review(final UUID reviewId, final UUID userId, final String content, final UUID placeId, final List<AttachedPhoto> attachedPhotos) {
         this.id = reviewId;
         this.content = content;
@@ -47,5 +49,9 @@ public class Review extends BaseEntity {
 
     public void updateAttachedPhotos(final List<AttachedPhoto> attachedPhotos) {
         this.attachedPhotos = new ArrayList<>(attachedPhotos);
+    }
+
+    public void delete() {
+        this.deleted = true;
     }
 }
