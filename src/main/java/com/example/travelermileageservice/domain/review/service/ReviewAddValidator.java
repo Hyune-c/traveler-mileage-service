@@ -13,7 +13,7 @@ import javax.validation.Validation;
 @Slf4j
 @RequiredArgsConstructor
 @Component
-public class ReviewAddValidator implements Validator {
+class ReviewAddValidator implements Validator {
 
     private static final javax.validation.Validator VALIDATOR = Validation.buildDefaultValidatorFactory().getValidator();
 
