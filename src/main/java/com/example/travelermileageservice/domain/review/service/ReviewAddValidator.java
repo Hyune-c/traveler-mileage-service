@@ -32,7 +32,7 @@ class ReviewAddValidator implements Validator {
         final ReviewAddDto dto = (ReviewAddDto) obj;
 
         // 사용자는 장소당 1개의 리뷰만 작성할 수 있습니다.
-        if (reviewRepository.existsByCreatedByAndPlaceId(dto.getUserId(), dto.getPlaceId())) {
+        if (reviewRepository.existsByCreatedByAndPlaceIdAndDeleted(dto.getUserId(), dto.getPlaceId(), false)) {
             errors.rejectValue("placeId", ERROR_CODE, ERROR_MESSAGE);
         }
 
