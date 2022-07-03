@@ -15,12 +15,8 @@ public class EventPostReqeust {
     private EventActionType action;
     @NotNull
     private UUID reviewId;
-    @NotNull
     private String content;
-    @NotNull
     private List<UUID> attachedPhotoIds;
-    @NotNull
     private UUID userId;
-    @NotNull
     private UUID placeId;
 }

@@ -4,7 +4,7 @@ import com.example.travelermileageservice.domain.review.entity.AttachedPhoto;
 import com.example.travelermileageservice.domain.review.entity.Review;
 import com.example.travelermileageservice.domain.review.repository.ReviewRepository;
 import com.example.travelermileageservice.domain.review.service.dto.ReviewAddDto;
-import com.example.travelermileageservice.domain.review.service.exception.ReviewException;
+import com.example.travelermileageservice.domain.review.service.exception.ReviewAddException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,7 +42,7 @@ public class ReviewAddService {
         reviewAddValidator.validate(dto, errors);
 
         if (errors.hasErrors()) {
-            throw new ReviewException(errors);
+            throw new ReviewAddException(errors);
         }
     }
 }
