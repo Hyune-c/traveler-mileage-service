@@ -1,11 +1,14 @@
 package com.example.travelermileageservice.domain.review.repository;
 
+import com.example.travelermileageservice.config.JpaConfig;
+import com.example.travelermileageservice.config.QueryDslConfig;
 import com.example.travelermileageservice.domain.review.entity.AttachedPhoto;
 import com.example.travelermileageservice.domain.review.entity.Review;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Import;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +17,7 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
+@Import({QueryDslConfig.class, JpaConfig.class})
 class ReviewRepositoryTest {
 
     @Autowired
