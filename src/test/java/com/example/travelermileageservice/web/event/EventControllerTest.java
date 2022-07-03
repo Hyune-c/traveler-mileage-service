@@ -12,6 +12,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
+import java.util.UUID;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -29,7 +31,7 @@ class EventControllerTest {
     @BeforeEach
     void beforeEach() {
         when(reviewAddService.add(any()))
-                .thenReturn(1L);
+                .thenReturn(UUID.randomUUID());
     }
 
     @DisplayName("리뷰 작성 - 성공")
