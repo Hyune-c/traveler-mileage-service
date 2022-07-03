@@ -48,7 +48,12 @@ public class Review extends BaseEntity {
     }
 
     public void updateAttachedPhotos(final List<AttachedPhoto> attachedPhotos) {
-        this.attachedPhotos = new ArrayList<>(attachedPhotos);
+        this.attachedPhotos.clear();
+        this.attachedPhotos.addAll(attachedPhotos);
+    }
+
+    public void updateContent(final String content) {
+        this.content = content;
     }
 
     public void delete() {

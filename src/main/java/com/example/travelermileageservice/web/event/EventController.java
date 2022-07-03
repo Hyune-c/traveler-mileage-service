@@ -3,7 +3,9 @@ package com.example.travelermileageservice.web.event;
 import com.example.travelermileageservice.domain.base.exception.BusinessException;
 import com.example.travelermileageservice.domain.review.service.ReviewAddService;
 import com.example.travelermileageservice.domain.review.service.ReviewDeleteService;
+import com.example.travelermileageservice.domain.review.service.ReviewModService;
 import com.example.travelermileageservice.domain.review.service.dto.ReviewAddDto;
+import com.example.travelermileageservice.domain.review.service.dto.ReviewModDto;
 import com.example.travelermileageservice.web.event.request.EventPostReqeust;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +20,7 @@ import java.util.UUID;
 public class EventController {
 
     private final ReviewAddService reviewAddService;
+    private final ReviewModService reviewModService;
     private final ReviewDeleteService reviewDeleteService;
 
     @PostMapping("/events")
@@ -28,7 +31,7 @@ public class EventController {
                         reqeust.getContent(), reqeust.getAttachedPhotoIds(), reqeust.getUserId(), reqeust.getPlaceId());
                 return reviewAddService.add(dto);
             case MOD:
-                return UUID.randomUUID();
+                return reviewModService.mod(ReviewModDto.of(reqeust.getReviewId(), reqeust.getContent(), reqeust.getAttachedPhotoIds()));
             case DELETE:
                 reviewDeleteService.delete(reqeust.getReviewId());
                 return null;
