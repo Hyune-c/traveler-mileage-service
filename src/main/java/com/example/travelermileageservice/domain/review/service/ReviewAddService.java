@@ -1,5 +1,6 @@
 package com.example.travelermileageservice.domain.review.service;
 
+import com.example.travelermileageservice.domain.point.service.PointAddService;
 import com.example.travelermileageservice.domain.review.entity.AttachedPhoto;
 import com.example.travelermileageservice.domain.review.entity.Review;
 import com.example.travelermileageservice.domain.review.repository.ReviewRepository;
@@ -15,9 +16,13 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import static com.example.travelermileageservice.domain.point.entity.PointHistory.Type.REVIEW_ADD;
+
 @RequiredArgsConstructor
 @Service
 public class ReviewAddService {
+
+    private final PointAddService pointAddService;
 
     private final ReviewAddValidator reviewAddValidator;
     private final ReviewRepository reviewRepository;
@@ -31,7 +36,10 @@ public class ReviewAddService {
                 .collect(Collectors.toList());
         final Review review = new Review(dto.getReviewId(), dto.getUserId(), dto.getContent(), dto.getPlaceId(), attachedPhotos);
 
-        return reviewRepository.save(review).getId();
+        reviewRepository.save(review);
+        pointAddService.add(REVIEW_ADD, dto.getReviewId(), dto.getUserId());
+
+        return review.getId();
     }
 
     /**
