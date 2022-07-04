@@ -5,7 +5,6 @@ import com.example.travelermileageservice.domain.base.exception.BusinessExceptio
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -50,8 +49,8 @@ public final class PointHistory extends BaseEntity {
         this.updatedBy = userId;
     }
 
-    public static PointHistory of(final Type type, final UUID sourceId, final UUID userId, final Integer bonusPoint) {
-        return new PointHistory(type, sourceId, userId, type.point, bonusPoint);
+    public static PointHistory of(final Type type, final UUID sourceId, final UUID userId, final Integer point, final Integer bonusPoint) {
+        return new PointHistory(type, sourceId, userId, point, bonusPoint);
     }
 
     public PointHistory convert() {
@@ -62,11 +61,7 @@ public final class PointHistory extends BaseEntity {
         return new PointHistory(REVIEW_DELETE, this.sourceId, this.createdBy, this.point * -1, this.bonusPoint * -1);
     }
 
-    @RequiredArgsConstructor
     public enum Type {
-        REVIEW_ADD(1),
-        REVIEW_DELETE(-1);
-
-        private final Integer point;
+        REVIEW_ADD, REVIEW_DELETE;
     }
 }

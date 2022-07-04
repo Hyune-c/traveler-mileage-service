@@ -53,7 +53,7 @@ class LargeTest {
         final List<UUID> attachedPhotos = List.of(UUID.randomUUID(), UUID.randomUUID());
 
         return Stream.of(
-                dynamicTest("user1이 리뷰 작성", () -> {
+                dynamicTest("user1이 리뷰 작성 - 내용+사진+최초 = 3점", () -> {
                     // given
                     final ReviewAddDto reviewAddDto = ReviewAddDto.of(reviewId, content, attachedPhotos, user1, placeId);
 
@@ -62,7 +62,7 @@ class LargeTest {
 
                     // then
                     assertThat(reviewRepository.findById(reviewId)).isNotNull();
-                    assertThat(pointGetService.get(user1)).isEqualTo(2);
+                    assertThat(pointGetService.get(user1)).isEqualTo(3);
                 }),
 
                 dynamicTest("user1이 작성한 리뷰에 내용 변경 & 사진 1장 추가", () -> {
@@ -79,7 +79,7 @@ class LargeTest {
                     final Review review = reviewRepository.findById(reviewId).get();
                     assertThat(review.getContent()).isEqualTo(newContent);
                     assertThat(review.getAttachedPhotos()).hasSize(3);
-                    assertThat(pointGetService.get(user1)).isEqualTo(2);
+                    assertThat(pointGetService.get(user1)).isEqualTo(3);
                 }),
 
                 dynamicTest("user1의 리뷰가 존재하는 장소에 user1이 리뷰 작성", () -> {
@@ -105,9 +105,9 @@ class LargeTest {
                     assertThat(pointGetService.get(user1)).isZero();
                 }),
 
-                dynamicTest("user1이 삭제된 리뷰가 있는 장소에 리뷰 작성", () -> {
+                dynamicTest("user1이 삭제된 리뷰가 있는 장소에 리뷰 작성 - 내용+최초 = 2점", () -> {
                     // given
-                    final ReviewAddDto reviewAddDto = ReviewAddDto.of(UUID.randomUUID(), content, List.of(UUID.randomUUID(), UUID.randomUUID()), user1, placeId);
+                    final ReviewAddDto reviewAddDto = ReviewAddDto.of(UUID.randomUUID(), content, List.of(), user1, placeId);
 
                     // when
                     reviewAddService.add(reviewAddDto);
@@ -117,7 +117,7 @@ class LargeTest {
                     assertThat(pointGetService.get(user1)).isEqualTo(2);
                 }),
 
-                dynamicTest("user1이 리뷰를 작성한 장소에 user2가 작성 - 포인트 1점", () -> {
+                dynamicTest("user1이 리뷰를 작성한 장소에 user2가 작성 - 내용+사진 = 2점", () -> {
                     // given
                     final ReviewAddDto reviewAddDto = ReviewAddDto.of(UUID.randomUUID(), content, List.of(UUID.randomUUID(), UUID.randomUUID()), user2, placeId);
 
@@ -125,10 +125,10 @@ class LargeTest {
                     reviewAddService.add(reviewAddDto);
 
                     // then
-                    assertThat(pointGetService.get(user2)).isEqualTo(1);
+                    assertThat(pointGetService.get(user2)).isEqualTo(2);
                 }),
 
-                dynamicTest("user2가 새로운 장소에 리뷰를 작성 - 포인트 1 + 2점", () -> {
+                dynamicTest("user2가 새로운 장소에 리뷰를 작성 - 기존2점+내용+사진+최초 = 5점", () -> {
                     // given
                     final ReviewAddDto reviewAddDto = ReviewAddDto.of(UUID.randomUUID(), content, List.of(UUID.randomUUID(), UUID.randomUUID()), user2, UUID.randomUUID());
 
@@ -136,7 +136,7 @@ class LargeTest {
                     reviewAddService.add(reviewAddDto);
 
                     // then
-                    assertThat(pointGetService.get(user2)).isEqualTo(3);
+                    assertThat(pointGetService.get(user2)).isEqualTo(5);
                 })
         );
     }
