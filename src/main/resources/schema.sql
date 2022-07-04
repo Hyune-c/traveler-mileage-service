@@ -13,15 +13,15 @@ create table attached_photo
 
 create table point_history
 (
-    id              bigint     not null auto_increment,
-    type            varchar(255) comment '구분',
-    source_id       BINARY(16) not null comment '구분 id',
-    add_point       integer    not null comment '기본 포인트',
-    add_bonus_point integer    not null comment '보너스 포인트',
-    created_at      datetime   not null,
-    created_by      BINARY(16) not null,
-    updated_at      datetime   not null,
-    updated_by      BINARY(16) not null,
+    id          bigint     not null auto_increment,
+    type        varchar(255) comment '구분',
+    source_id   BINARY(16) not null comment '구분 id',
+    point       integer    not null comment '기본 포인트',
+    bonus_point integer    not null comment '보너스 포인트',
+    created_at  datetime   not null,
+    created_by  BINARY(16) not null,
+    updated_at  datetime   not null,
+    updated_by  BINARY(16) not null,
     primary key (id)
 ) comment '포인트 이력';
 

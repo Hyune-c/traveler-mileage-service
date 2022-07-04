@@ -35,23 +35,23 @@ public final class PointHistory extends BaseEntity {
     private UUID sourceId;
 
     @Column(updatable = false, nullable = false)
-    private Integer addPoint;
+    private Integer point;
 
     @Column(updatable = false, nullable = false)
-    private Integer addBonusPoint;
+    private Integer bonusPoint;
 
-    private PointHistory(final Type type, final UUID sourceId, final UUID userId, final Integer addPoint, final Integer addBonusPoint) {
+    private PointHistory(final Type type, final UUID sourceId, final UUID userId, final Integer point, final Integer bonusPoint) {
         this.type = type;
         this.sourceId = sourceId;
-        this.addPoint = addPoint;
-        this.addBonusPoint = addBonusPoint;
+        this.point = point;
+        this.bonusPoint = bonusPoint;
 
         this.createdBy = userId;
         this.updatedBy = userId;
     }
 
-    public static PointHistory of(final Type type, final UUID sourceId, final UUID userId, final Integer addBonusPoint) {
-        return new PointHistory(type, sourceId, userId, type.addPoint, addBonusPoint);
+    public static PointHistory of(final Type type, final UUID sourceId, final UUID userId, final Integer bonusPoint) {
+        return new PointHistory(type, sourceId, userId, type.point, bonusPoint);
     }
 
     public PointHistory convert() {
@@ -59,7 +59,7 @@ public final class PointHistory extends BaseEntity {
             throw new BusinessException("변환할 수 없는 기록 입니다.");
         }
 
-        return new PointHistory(REVIEW_DELETE, this.sourceId, this.createdBy, this.addPoint * -1, this.addBonusPoint * -1);
+        return new PointHistory(REVIEW_DELETE, this.sourceId, this.createdBy, this.point * -1, this.bonusPoint * -1);
     }
 
     @RequiredArgsConstructor
@@ -67,6 +67,6 @@ public final class PointHistory extends BaseEntity {
         REVIEW_ADD(1),
         REVIEW_DELETE(-1);
 
-        private final Integer addPoint;
+        private final Integer point;
     }
 }

@@ -15,7 +15,7 @@ class PointHistoryQuerydslImpl implements PointHistoryQuerydsl {
     @Override
     public Integer getPoint(final UUID userId) {
         return queryFactory
-                .select(pointHistory.addPoint.sum().add(pointHistory.addBonusPoint.sum()).coalesce(0))
+                .select(pointHistory.point.sum().add(pointHistory.bonusPoint.sum()).coalesce(0))
                 .from(pointHistory)
                 .where(pointHistory.createdBy.eq(userId))
                 .fetchOne();
