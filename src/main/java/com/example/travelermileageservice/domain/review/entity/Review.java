@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
@@ -30,7 +31,7 @@ public class Review extends BaseEntity {
     @Column(columnDefinition = "BINARY(16)", updatable = false)
     private UUID placeId;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderColumn(name = "POSITION")
     @JoinColumn(name = "REVIEW_ID")
     private List<AttachedPhoto> attachedPhotos;
