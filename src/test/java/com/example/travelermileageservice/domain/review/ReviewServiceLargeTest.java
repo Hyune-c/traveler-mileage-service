@@ -82,7 +82,7 @@ class ReviewServiceLargeTest {
                     // then
                     assertThat(reviewRepository.findById(reviewId)).isPresent();
                     assertThat(reviewRepository.findById(reviewId).get().getDeleted()).isTrue();
-                    // TODO 리뷰 삭제 기능 구현 후 포인트 차감 검증 추가
+                    assertThat(pointGetService.get(user1)).isZero();
                 }),
 
                 dynamicTest("user1이 삭제된 리뷰가 있는 장소에 리뷰 작성", () -> {
@@ -94,8 +94,7 @@ class ReviewServiceLargeTest {
 
                     // then
                     assertThat(reviewRepository.findById(reviewId)).isNotNull();
-                    // TODO 리뷰 삭제 기능 구현 후 수정
-                    assertThat(pointGetService.get(user1)).isEqualTo(4);
+                    assertThat(pointGetService.get(user1)).isEqualTo(2);
                 }),
 
                 dynamicTest("user1이 리뷰를 작성한 장소에 user2가 작성 - 포인트 1점", () -> {
