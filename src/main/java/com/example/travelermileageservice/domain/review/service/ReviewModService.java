@@ -1,6 +1,7 @@
 package com.example.travelermileageservice.domain.review.service;
 
 import com.example.travelermileageservice.domain.base.exception.BusinessException;
+import com.example.travelermileageservice.domain.point.service.PointCreateFacade;
 import com.example.travelermileageservice.domain.review.entity.AttachedPhoto;
 import com.example.travelermileageservice.domain.review.entity.Review;
 import com.example.travelermileageservice.domain.review.repository.ReviewRepository;
@@ -16,9 +17,13 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import static com.example.travelermileageservice.domain.point.entity.PointHistory.Type.REVIEW_MOD;
+
 @RequiredArgsConstructor
 @Service
 public class ReviewModService {
+
+    private final PointCreateFacade pointCreateFacade;
 
     private final ReviewModValidator reviewModValidator;
     private final ReviewRepository reviewRepository;
@@ -34,6 +39,8 @@ public class ReviewModService {
 
         review.updateAttachedPhotos(attachedPhotos);
         review.updateContent(dto.getContent());
+
+        pointCreateFacade.create(REVIEW_MOD, review.getId(), review.getCreatedBy());
 
         return review.getId();
     }

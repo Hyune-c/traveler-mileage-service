@@ -23,6 +23,7 @@ public class PointCreateFacade {
      * - 지금의 구현에서는 PointHistory를 통해 이루어 집니다.
      */
     private final PointHistoryCreateByReviewAddImpl pointHistoryCreateByReviewAdd;
+    private final PointHistoryCreateByReviewModmpl pointHistoryCreateByReviewMod;
     private final PointHistoryCreateByReviewDeleteImpl pointHistoryCreateByReviewDelete;
 
     private final ReviewRepository reviewRepository;
@@ -46,7 +47,7 @@ public class PointCreateFacade {
                 pointHistoryCreateByReviewAdd.excute(review);
                 return;
             case REVIEW_MOD:
-                //TODO
+                pointHistoryCreateByReviewMod.excute(review);
                 return;
             case REVIEW_DELETE:
                 pointHistoryCreateByReviewDelete.excute(review);
