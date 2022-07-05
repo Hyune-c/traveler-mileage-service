@@ -1,6 +1,6 @@
 # 트리플여행자 클럽 마일리지 서비스
 
-> public repository 사용 및 회사명 노출을 허락받은 후 작성된 repository 입니다.
+> 회사명 노출 및 public repository 사용을 허락받았습니다.
 
 트리플 사용자들이 장소에 리뷰를 작성할 때 포인트를 부여하고, 전체/개인에 대한 포인트 부여 히스토리와 개인별 누적포인트를 관리하고자 합니다.
 
@@ -35,10 +35,18 @@ POST /events
 
 ### with h2
 
+1. 실행
+
 ```shell
 # local profile 
 > ./gradlew clean bootRun --args='--spring.profiles.active=local'
 ```
+
+2. h2-console 접속
+
+http://localhost:8080/h2-console
+
+![image](https://user-images.githubusercontent.com/55722186/177390797-4ac154f8-320f-4263-873c-895a43055bc8.png)
 
 ### with mysql
 
@@ -67,53 +75,59 @@ https://github.com/Hyune-c/traveler-mileage-service/wiki
 
 ### 1. ERD 설계
 
-![image](https://user-images.githubusercontent.com/55722186/177181394-d327f75b-3e97-4094-a978-b8fd31060b97.png)
+![image](https://user-images.githubusercontent.com/55722186/177860478-8b468996-5cee-43a1-92fd-f60add66d744.png)
 
 ### 2. 단위 테스트 & LargeTest 구현 with dynamicTest
 
-![image](https://user-images.githubusercontent.com/55722186/177181783-bb69b5f7-489f-4e1e-928c-bf035baabc04.png)
+![image](https://user-images.githubusercontent.com/55722186/177392995-b533e1f6-9d51-4b03-9cb0-e3bb697074c5.png)
 
-### 3. 설계 & 구현에 대한 생각
+### 3. 설계에 대한 생각
 
-- 간소화된 DDD 설계
+- 레이어드 아키텍처 설계
     - web 레이어 분리
+    - domain 레이어로 review와 point를 설계
     - SRP를 준수한 service 레이어 (business 레이어)
-- 레이어간/객체간 메시지 전달에 dto를 활용하고 구분된 네이밍을 정의
-    - web 레이어 dto - request, response
-    - service 레이어 dto - dto
+- 포인트 적립을 Facade 패턴으로 설계 `PointCreateFacade`
 - JPA 기능을 한정적으로 활용한 영속성 레이어 설계
     - 성능이 필요한 기능은 querydsl 활용
-- 가독성과 안전함을 고려한 코딩
-    - 함수형 프로그래밍 및 kotlin의 베스트 케이스 적용
-    - google style guide, sonarlint를 활용한 컨벤션 체크
 
-### 3. Spring Validator를 활용한 dto 검증
-
-- web 레이어의 bean validation만이라면 어노테이션만으로도 쉽게 됩니다.
-- 하지만 구현 요구상
-    - 하나의 request에서 type에 따라 복수의 요청을 처리해야하고,
-    - 비지니스 검증도 필요한 로직이 있기에 Validator를 활용했습니다.
-
-### 4. Event Driven 구조의 포인트 설계
+### 3-1. Event Driven 구조의 포인트 설계
 
 ![image](https://user-images.githubusercontent.com/55722186/177184936-4fc6005d-f4d8-4f9b-b427-8b9ac481aec3.png)
 
-- 과제 조건에는 포인트 변경의 소스가 리뷰만이지만, 실무라면 포인트 변경의 소스가 계속 늘어날 것입니다.
+- 과제 조건에는 포인트 변경의 소스가 리뷰뿐이지만, 실무라면 포인트 변경의 소스가 계속 늘어날 것입니다.
     - 포인트는 이력이 중요하며 레이스 컨디션의 주체가 적고 조회가 주가 됩니다.
     - 차후 마이크로 서비스의 분리 대상이 됩니다.
 - 따라서 history-replay 기반의 설계로 이력과 현재 포인트 조회를 가져오도록 설계 했습니다.
     - 가장 많은 요청인 현재 포인트 조회는 캐싱한 후 userId (createdBy) 기반으로 변경이 생기면 evict 합니다.
     - 단순 이력으로 설계했기에 큐를 활용하거나 비동기 로직을 통해 빠른 응답을 기대하도록 개선할 수 있습니다.
     - 마이크로 서비스로 분리된다면 CDC (Change Data Capture) 등의 기술을 활용합니다.
-- 캐시는 현재 구현되어 있지 않습니다.
+- 캐시는 구현되어 있지 않습니다.
 
-## # 개선 가능한 항목
+### 4. 지속 가능한 개발에 대한 생각
 
-- [ ] [필수] 리뷰 수정시 포인트 획득/차감
-- [ ] [필수] 인덱스 및 쿼리 최적화
-- [ ] 표준 예외 처리 구현
-- [ ] 예외 처리 상세화
-- [ ] service 클래스를 interface로 구조화
-- [ ] 포인트 조회 캐싱
-- [ ] 코드 정리
-- [ ] docker-compose를 통한 기동 with mysql, redis
+- 레이어간/객체간 메시지 전달에 dto를 활용하고 구분된 네이밍을 정의
+    - web 레이어 dto - request, response
+    - service 레이어 dto - dto
+- 가독성과 안전함을 고려한 코딩
+    - 함수형 프로그래밍 및 kotlin의 베스트 케이스 적용
+    - google style guide, sonarlint를 활용한 컨벤션 체크
+- 가독성과 구현 의도를 알리기 위한 javadoc 작성 - public 메서드 위주
+    - 실무에서도 작성하는 편이지만, 구현 의도를 알리기 위해 조금 더 자세하게 작성했습니다.
+
+### 4-1. Spring Validator를 활용한 dto 검증
+
+- web 레이어의 bean validation만이라면 어노테이션만으로도 쉽게 됩니다.
+- 하지만 구현 요구상
+    - 하나의 request에서 type에 따라 복수의 요청을 처리해야하고,
+    - 비지니스 검증도 필요한 로직이 있기에 Validator를 실험적으로 활용했습니다.
+
+### 4-2. 표준 예외 처리 구현 `ErrorResponse`
+
+- transactionId를 통해 요청을 추적할 수 있습니다.
+    - 구현 방법에 따라 서버에서 발급한 transactionId/requestId를 사용하거나, 프론트에서 직접 발급할 수도 있습니다.
+    - 이 프로젝트에서는 내부 로깅용으로 에러 추적을 위해서만 사용합니다.
+
+<img width="435" alt="image" src="https://user-images.githubusercontent.com/55722186/177984342-b8abdd79-4678-40f4-a857-9c21618195db.png">
+<img width="437" alt="image" src="https://user-images.githubusercontent.com/55722186/177984487-97c018b8-e38c-418b-976b-435618296391.png">
+
