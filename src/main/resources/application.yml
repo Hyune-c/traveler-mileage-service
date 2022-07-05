@@ -8,7 +8,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: validate
     show-sql: true
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     open-in-view: false
@@ -19,7 +19,7 @@ spring:
 
   sql:
     init:
-      schema-locations: classpath:schema.sql
+      schema-locations: classpath:sql/schema.sql
       mode: ALWAYS
 
 logging:
