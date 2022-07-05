@@ -30,7 +30,7 @@ class PointControllerTest {
     class PointGetSuccess {
 
         private final String url = "/point";
-        private final UUID userId = UUID.fromString("3ede0ef2-92b7-4817-a5f3-0c575361f745");
+        private final UUID userId = UUID.randomUUID();
 
         @DisplayName("성공")
         @Test
