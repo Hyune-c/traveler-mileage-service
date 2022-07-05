@@ -1,6 +1,6 @@
 package com.example.travelermileageservice.domain.review.service;
 
-import com.example.travelermileageservice.domain.point.service.PointAddService;
+import com.example.travelermileageservice.domain.point.service.PointCreateFacade;
 import com.example.travelermileageservice.domain.review.entity.AttachedPhoto;
 import com.example.travelermileageservice.domain.review.entity.Review;
 import com.example.travelermileageservice.domain.review.repository.ReviewRepository;
@@ -22,7 +22,7 @@ import static com.example.travelermileageservice.domain.point.entity.PointHistor
 @Service
 public class ReviewAddService {
 
-    private final PointAddService pointAddService;
+    private final PointCreateFacade pointCreateFacade;
 
     private final ReviewAddValidator reviewAddValidator;
     private final ReviewRepository reviewRepository;
@@ -37,7 +37,7 @@ public class ReviewAddService {
         final Review review = new Review(dto.getReviewId(), dto.getUserId(), dto.getContent(), dto.getPlaceId(), attachedPhotos);
 
         reviewRepository.save(review);
-        pointAddService.add(REVIEW_ADD, dto.getReviewId(), dto.getUserId());
+        pointCreateFacade.create(REVIEW_ADD, dto.getReviewId(), dto.getUserId());
 
         return review.getId();
     }

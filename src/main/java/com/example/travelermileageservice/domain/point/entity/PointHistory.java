@@ -12,6 +12,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -51,5 +52,9 @@ public final class PointHistory extends BaseEntity {
 
     public enum Type {
         REVIEW_ADD, REVIEW_MOD, REVIEW_DELETE;
+
+        public boolean isReview() {
+            return List.of(REVIEW_ADD, REVIEW_MOD, REVIEW_DELETE).contains(this);
+        }
     }
 }

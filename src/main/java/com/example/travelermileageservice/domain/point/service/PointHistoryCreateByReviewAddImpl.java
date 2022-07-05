@@ -1,14 +1,12 @@
-
 package com.example.travelermileageservice.domain.point.service;
 
-import com.example.travelermileageservice.domain.base.exception.BusinessException;
 import com.example.travelermileageservice.domain.point.entity.PointHistory;
 import com.example.travelermileageservice.domain.point.repository.PointHistoryRepository;
 import com.example.travelermileageservice.domain.review.entity.AttachedPhoto;
 import com.example.travelermileageservice.domain.review.entity.Review;
 import com.example.travelermileageservice.domain.review.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
@@ -18,19 +16,25 @@ import java.util.function.ToIntFunction;
 import static com.example.travelermileageservice.domain.point.entity.PointHistory.Type.REVIEW_ADD;
 
 @RequiredArgsConstructor
-@Service
-public class PointAddReviewAddService {
+@Component
+class PointHistoryCreateByReviewAddImpl implements PointHistoryCreateByReviewInterface {
 
     private final PointHistoryRepository pointHistoryRepository;
     private final ReviewRepository reviewRepository;
 
+    /**
+     * point - 내용 1점, 사진 1점<br>
+     * bonusPoint - 최초 작성 1점
+     *
+     * @param review 작성한 리뷰
+     */
     @Transactional
-    public void reviewAdd(final UUID reviewId, final UUID userId) {
-        final Review review = reviewRepository.findById(reviewId).orElseThrow(() -> new BusinessException("찾을 수 없는 리뷰"));
+    @Override
+    public void excute(final Review review) {
         final int point = calculatePoint(review);
-        final int bonusPoint = calculateBonusPoint(reviewId);
+        final int bonusPoint = calculateBonusPoint(review.getId());
 
-        pointHistoryRepository.save(PointHistory.of(REVIEW_ADD, reviewId, userId, point, bonusPoint));
+        pointHistoryRepository.save(PointHistory.of(REVIEW_ADD, review.getId(), review.getCreatedBy(), point, bonusPoint));
     }
 
     private static int calculatePoint(final Review review) {
