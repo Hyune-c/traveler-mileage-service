@@ -1,11 +1,11 @@
 package com.example.travelermileageservice.largetest;
 
+import com.example.travelermileageservice.config.exception.CustomValidationException;
 import com.example.travelermileageservice.domain.point.service.PointGetService;
 import com.example.travelermileageservice.domain.review.repository.ReviewRepository;
 import com.example.travelermileageservice.domain.review.service.ReviewAddService;
 import com.example.travelermileageservice.domain.review.service.ReviewDeleteService;
 import com.example.travelermileageservice.domain.review.service.dto.ReviewAddDto;
-import com.example.travelermileageservice.domain.review.service.exception.ReviewAddException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.TestFactory;
@@ -64,7 +64,7 @@ class ReviewAddLargeTest {
 
                     // when
                     assertThatThrownBy(() -> reviewAddService.add(reviewAddDto))
-                            .isInstanceOf(ReviewAddException.class);
+                            .isInstanceOf(CustomValidationException.class);
 
                     // then
                 }),

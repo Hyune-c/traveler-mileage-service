@@ -1,17 +1,18 @@
 package com.example.travelermileageservice.domain.review.service;
 
-import com.example.travelermileageservice.domain.base.exception.BusinessException;
+import com.example.travelermileageservice.config.exception.BusinessException;
+import com.example.travelermileageservice.config.exception.CustomValidationException;
+import com.example.travelermileageservice.config.exception.ErrorCode;
 import com.example.travelermileageservice.domain.point.service.PointCreateFacade;
 import com.example.travelermileageservice.domain.review.entity.AttachedPhoto;
 import com.example.travelermileageservice.domain.review.entity.Review;
 import com.example.travelermileageservice.domain.review.repository.ReviewRepository;
 import com.example.travelermileageservice.domain.review.service.dto.ReviewModDto;
-import com.example.travelermileageservice.domain.review.service.exception.ReviewAddException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BeanPropertyBindingResult;
-import org.springframework.validation.Errors;
+import org.springframework.validation.BindingResult;
 
 import java.util.List;
 import java.util.UUID;
@@ -32,7 +33,7 @@ public class ReviewModService {
     public UUID mod(final ReviewModDto dto) {
         validate(dto);
 
-        final Review review = reviewRepository.findById(dto.getReviewId()).orElseThrow(() -> new BusinessException("찾을 수 없는 리뷰"));
+        final Review review = reviewRepository.findById(dto.getReviewId()).orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND));
         final List<AttachedPhoto> attachedPhotos = dto.getAttachedPhotoIds().stream()
                 .map(AttachedPhoto::new)
                 .collect(Collectors.toList());
@@ -46,11 +47,11 @@ public class ReviewModService {
     }
 
     private void validate(final ReviewModDto dto) {
-        final Errors errors = new BeanPropertyBindingResult(dto, ReviewModDto.class.getName());
-        reviewModValidator.validate(dto, errors);
+        final BindingResult bindingResult = new BeanPropertyBindingResult(dto, ReviewModDto.class.getName());
+        reviewModValidator.validate(dto, bindingResult);
 
-        if (errors.hasErrors()) {
-            throw new ReviewAddException(errors);
+        if (bindingResult.hasErrors()) {
+            throw new CustomValidationException(bindingResult);
         }
     }
 }

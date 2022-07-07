@@ -1,6 +1,7 @@
 package com.example.travelermileageservice.domain.point.service;
 
-import com.example.travelermileageservice.domain.base.exception.BusinessException;
+import com.example.travelermileageservice.config.exception.BusinessException;
+import com.example.travelermileageservice.config.exception.ErrorCode;
 import com.example.travelermileageservice.domain.point.entity.PointHistory;
 import com.example.travelermileageservice.domain.review.entity.Review;
 import com.example.travelermileageservice.domain.review.repository.ReviewRepository;
@@ -35,12 +36,12 @@ public class PointCreateFacade {
             return;
         }
 
-        throw new BusinessException("Unexpected value: " + eventType);
+        throw new BusinessException(ErrorCode.UNKNOWN);
     }
 
     private void byReview(final PointHistory.EventType eventType, final UUID reviewId, final UUID userId) {
         final Review review = reviewRepository.findById(reviewId)
-                .orElseThrow(() -> new BusinessException("찾을 수 없는 리뷰"));
+                .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND));
 
         switch (eventType) {
             case REVIEW_ADD:
@@ -53,7 +54,7 @@ public class PointCreateFacade {
                 pointHistoryCreateByReviewDelete.excute(review);
                 return;
             default:
-                throw new BusinessException("Unexpected value: " + eventType);
+                throw new BusinessException(ErrorCode.UNKNOWN);
         }
     }
 }

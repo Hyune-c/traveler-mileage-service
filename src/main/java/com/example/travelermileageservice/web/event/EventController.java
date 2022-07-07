@@ -1,6 +1,7 @@
 package com.example.travelermileageservice.web.event;
 
-import com.example.travelermileageservice.domain.base.exception.BusinessException;
+import com.example.travelermileageservice.config.exception.BusinessException;
+import com.example.travelermileageservice.config.exception.ErrorCode;
 import com.example.travelermileageservice.domain.review.service.ReviewAddService;
 import com.example.travelermileageservice.domain.review.service.ReviewDeleteService;
 import com.example.travelermileageservice.domain.review.service.ReviewModService;
@@ -36,7 +37,7 @@ public class EventController {
                 reviewDeleteService.delete(reqeust.getReviewId());
                 return null;
             default:
-                throw new BusinessException("Unexpected value: " + reqeust.getAction());
+                throw new BusinessException(ErrorCode.NOT_FOUND);
         }
     }
 }
