@@ -25,10 +25,10 @@ public final class PointHistory extends BaseEntity {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    private Type type;
+    private EventType eventType;
 
     @Column(columnDefinition = "BINARY(16)", updatable = false, nullable = false)
-    private UUID sourceId;
+    private UUID eventId;
 
     @Column(updatable = false, nullable = false)
     private Integer point;
@@ -36,9 +36,9 @@ public final class PointHistory extends BaseEntity {
     @Column(updatable = false, nullable = false)
     private Integer bonusPoint;
 
-    private PointHistory(final Type type, final UUID sourceId, final UUID userId, final Integer point, final Integer bonusPoint) {
-        this.type = type;
-        this.sourceId = sourceId;
+    private PointHistory(final EventType eventType, final UUID eventId, final UUID userId, final Integer point, final Integer bonusPoint) {
+        this.eventType = eventType;
+        this.eventId = eventId;
         this.point = point;
         this.bonusPoint = bonusPoint;
 
@@ -46,11 +46,14 @@ public final class PointHistory extends BaseEntity {
         this.updatedBy = userId;
     }
 
-    public static PointHistory of(final Type type, final UUID sourceId, final UUID userId, final Integer point, final Integer bonusPoint) {
-        return new PointHistory(type, sourceId, userId, point, bonusPoint);
+    public static PointHistory of(final EventType eventType, final UUID sourceId, final UUID userId, final Integer point, final Integer bonusPoint) {
+        return new PointHistory(eventType, sourceId, userId, point, bonusPoint);
     }
 
-    public enum Type {
+    /**
+     * 포인트 이력이 쌓이는 이벤트 종류
+     */
+    public enum EventType {
         REVIEW_ADD, REVIEW_MOD, REVIEW_DELETE;
 
         public boolean isReview() {

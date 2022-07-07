@@ -14,8 +14,8 @@ create table attached_photo
 create table point_history
 (
     id          bigint     not null auto_increment,
-    type        varchar(255) comment '이벤트 구분',
-    source_id   BINARY(16) not null comment '이벤트 id',
+    event_type        varchar(255) comment '이벤트 구분',
+    event_id   BINARY(16) not null comment '이벤트 id',
     point       integer    not null comment '기본 포인트',
     bonus_point integer    not null comment '보너스 포인트',
     created_at  datetime   not null,

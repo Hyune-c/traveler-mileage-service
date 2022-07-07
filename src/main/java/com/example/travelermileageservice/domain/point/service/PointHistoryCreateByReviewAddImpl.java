@@ -13,7 +13,7 @@ import java.util.Collection;
 import java.util.UUID;
 import java.util.function.ToIntFunction;
 
-import static com.example.travelermileageservice.domain.point.entity.PointHistory.Type.REVIEW_ADD;
+import static com.example.travelermileageservice.domain.point.entity.PointHistory.EventType.REVIEW_ADD;
 
 @RequiredArgsConstructor
 @Component

@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
-import static com.example.travelermileageservice.domain.point.entity.PointHistory.Type.REVIEW_DELETE;
+import static com.example.travelermileageservice.domain.point.entity.PointHistory.EventType.REVIEW_DELETE;
 
 @RequiredArgsConstructor
 @Service

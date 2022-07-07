@@ -9,9 +9,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
 
-import static com.example.travelermileageservice.domain.point.entity.PointHistory.Type.REVIEW_ADD;
-import static com.example.travelermileageservice.domain.point.entity.PointHistory.Type.REVIEW_DELETE;
-import static com.example.travelermileageservice.domain.point.entity.PointHistory.Type.REVIEW_MOD;
+import static com.example.travelermileageservice.domain.point.entity.PointHistory.EventType.REVIEW_ADD;
+import static com.example.travelermileageservice.domain.point.entity.PointHistory.EventType.REVIEW_DELETE;
+import static com.example.travelermileageservice.domain.point.entity.PointHistory.EventType.REVIEW_MOD;
 
 @RequiredArgsConstructor
 @Component

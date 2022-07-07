@@ -29,20 +29,20 @@ public class PointCreateFacade {
     private final ReviewRepository reviewRepository;
 
     @Transactional
-    public void create(final PointHistory.Type type, final UUID sourceId, final UUID userId) {
-        if (type.isReview()) {
-            byReview(type, sourceId, userId);
+    public void create(final PointHistory.EventType eventType, final UUID sourceId, final UUID userId) {
+        if (eventType.isReview()) {
+            byReview(eventType, sourceId, userId);
             return;
         }
 
-        throw new BusinessException("Unexpected value: " + type);
+        throw new BusinessException("Unexpected value: " + eventType);
     }
 
-    private void byReview(final PointHistory.Type type, final UUID reviewId, final UUID userId) {
+    private void byReview(final PointHistory.EventType eventType, final UUID reviewId, final UUID userId) {
         final Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new BusinessException("찾을 수 없는 리뷰"));
 
-        switch (type) {
+        switch (eventType) {
             case REVIEW_ADD:
                 pointHistoryCreateByReviewAdd.excute(review);
                 return;
@@ -53,7 +53,7 @@ public class PointCreateFacade {
                 pointHistoryCreateByReviewDelete.excute(review);
                 return;
             default:
-                throw new BusinessException("Unexpected value: " + type);
+                throw new BusinessException("Unexpected value: " + eventType);
         }
     }
 }

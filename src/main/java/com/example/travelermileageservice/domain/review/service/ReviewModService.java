@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import static com.example.travelermileageservice.domain.point.entity.PointHistory.Type.REVIEW_MOD;
+import static com.example.travelermileageservice.domain.point.entity.PointHistory.EventType.REVIEW_MOD;
 
 @RequiredArgsConstructor
 @Service

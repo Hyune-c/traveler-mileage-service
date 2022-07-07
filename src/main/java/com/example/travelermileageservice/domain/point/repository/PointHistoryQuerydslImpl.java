@@ -25,17 +25,17 @@ class PointHistoryQuerydslImpl implements PointHistoryQuerydsl {
     }
 
     @Override
-    public Integer getPoint(final Set<PointHistory.Type> types, final UUID sourceId) {
-        return getPoint(types, sourceId, false);
+    public Integer getPoint(final Set<PointHistory.EventType> eventTypes, final UUID sourceId) {
+        return getPoint(eventTypes, sourceId, false);
     }
 
     @Override
-    public Integer getPoint(final Set<PointHistory.Type> types, final UUID sourceId, final Boolean pointOnly) {
+    public Integer getPoint(final Set<PointHistory.EventType> eventTypes, final UUID sourceId, final Boolean pointOnly) {
         return queryFactory
                 .select(getPointSelect(pointOnly))
                 .from(pointHistory)
-                .where(pointHistory.type.in(types)
-                        .and(pointHistory.sourceId.eq(sourceId)))
+                .where(pointHistory.eventType.in(eventTypes)
+                        .and(pointHistory.eventId.eq(sourceId)))
                 .fetchOne();
     }
 
