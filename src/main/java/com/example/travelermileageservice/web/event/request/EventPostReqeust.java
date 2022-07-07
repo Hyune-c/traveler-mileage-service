@@ -1,7 +1,5 @@
 package com.example.travelermileageservice.web.event.request;
 
-import com.example.travelermileageservice.web.event.EventActionType;
-import com.example.travelermileageservice.web.event.EventType;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
@@ -11,7 +9,9 @@ import java.util.UUID;
 @Data
 public class EventPostReqeust {
 
+    @NotNull
     private EventType type;
+    @NotNull
     private EventActionType action;
     @NotNull
     private UUID reviewId;
