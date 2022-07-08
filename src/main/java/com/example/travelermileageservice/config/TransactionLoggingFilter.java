@@ -14,6 +14,9 @@ import java.util.UUID;
 @Component
 public class TransactionLoggingFilter implements Filter {
 
+    /**
+     * 요청마다 고유한 transactionId 발급
+     */
     @Override
     public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain) throws IOException, ServletException {
         MDC.put("transactionId", String.valueOf(UUID.randomUUID()));
