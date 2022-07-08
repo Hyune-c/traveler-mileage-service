@@ -119,8 +119,8 @@ https://github.com/Hyune-c/traveler-mileage-service/wiki
 
 - web 레이어의 bean validation만이라면 어노테이션만으로도 쉽게 됩니다.
 - 하지만 구현 요구상
-    - 하나의 request에서 type에 따라 복수의 요청을 처리해야하고,
-    - 비지니스 검증도 필요한 로직이 있기에 Validator를 실험적으로 활용했습니다.
+    - 하나의 request에서 type에 따라 복수 종류의 요청을 처리해야하고, 비지니스 검증도 필요합니다.
+    - 그렇기에 조금 과하지만 Validator를 실험적으로 활용했습니다.
 
 ### 4-2. 표준 예외 처리 구현 `ErrorResponse`
 
