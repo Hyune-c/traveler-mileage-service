@@ -1,0 +1,31 @@
+spring:
+  profiles:
+    active:
+      on-profile: local
+
+  datasource:
+    url: ${JDBC_URL:jdbc:h2:mem:testdb}
+    driverClassName: org.h2.Driver
+    username: ${JDBC_USERNAME:sa}
+    password: ${JDBC_PASSWORD:}
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    database-platform: org.hibernate.dialect.H2Dialect
+    properties:
+      default_batch_fetch_size: 1000
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+    open-in-view: false
+    show-sql: true
+    format_sql: true
+
+  sql:
+    init:
+      mode: NEVER
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
